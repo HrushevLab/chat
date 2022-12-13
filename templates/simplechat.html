@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-12 chatarea">
+        <div class="col-12 chatarea" id="chat">
             
         </div>
     </div>
@@ -19,15 +19,20 @@
     <script>
         /*Connect to back end*/
         const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-        socket.on('connect', () => {})
+        socket.on('connect', () => {
+            socket.on('sendMessage',function(data){
+                console.log(data)
+                document.getElementById("chat").innerText += data;
+            })
+        })
 
         /*Click on btn*/
         var btn = document.querySelector("#messageBtn");
-        btn.addEventListener("click", function(msg) {
+        btn.addEventListener("click", function() {
             nick = 'TheGeek';
             message = document.getElementById('message').value
-            socket.emit('sendMessage', { data: message });
-            console.log(msg)
+            socket.emit('sendMessage', {'nick':nick, 'message':message});
+            
         });
 
         /*Get message from server*/

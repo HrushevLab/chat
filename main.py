@@ -30,9 +30,9 @@ def test_disconnect():
     print('Client disconnected')
 
 @socketio.on('sendMessage')
-def handle_my_custom_event(data):
-    print('received args: ' + str(data))
-    emit('my response', data, broadcast=True)
+def handleSendMessage(data):
+    print(str(data['nick']))
+    emit('sendMessage', data['nick']+": "+data['message']+"\n", broadcast=True)
 
 
 if __name__ == "__main__":
