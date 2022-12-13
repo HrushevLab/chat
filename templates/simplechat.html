@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 chatarea">
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-11 btnSide">
+            <input type="text" class="sendText" id="message">
+        </div>
+        <div class="col-1">
+            <button class="sendText" id="messageBtn">SEND</button>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+
+    <script>
+        /*Connect to back end*/
+        const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+        socket.on('connect', () => {})
+
+        /*Click on btn*/
+        var btn = document.querySelector("#messageBtn");
+        btn.addEventListener("click", function(msg) {
+            nick = 'TheGeek';
+            message = document.getElementById('message').value
+            socket.emit('sendMessage', { data: message });
+            console.log(msg)
+        });
+
+        /*Get message from server*/
+        socket.on('my_response', function(msg) {
+            $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+            });
+    </script>
+
+
+{% endblock %}
